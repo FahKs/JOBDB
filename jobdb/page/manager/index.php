@@ -9,7 +9,7 @@ include '../../service/condb.php';
 $conn = new ConnectionDatabase();
 
 // เรียกใช้เมธอด connect() เพื่อเชื่อมต่อกับฐานข้อมูลและเก็บการเชื่อมต่อไว้ในตัวแปร $conn
-$conn = $conn->connect();
+$conn = $conn-> connect();
 
 // รับค่าการค้นหาที่ถูกส่งมาจากฟอร์มผ่าน URL ถ้าไม่มีการส่งค่ามาจะใช้ค่าว่าง ('') แทน
 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -93,7 +93,6 @@ $result = mysqli_query($conn, $query);
 </head>
 
 <body>
-
   <!-- แถบด้านข้าง (Sidebar) -->
   <div class="sidebar">
     <!-- ชื่อหัวข้อเมนู -->
@@ -103,41 +102,50 @@ $result = mysqli_query($conn, $query);
       <!-- เมนู Manage เป็น dropdown -->
       <li class="nav-item dropdown">
         <!-- ลิงก์หลักของ dropdown มีคลาส dropdown-toggle และ active -->
-        <a class="nav-link dropdown-toggle active" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link active" href="index.php">
           <!-- ไอคอนผู้ใช้ และข้อความ Manage -->
-          <i class="fas fa-user"></i> Manage
+          <i class="fas fa-users"></i> Show Users
         </a>
-        <!-- รายการย่อยใน dropdown -->
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <!-- ลิงก์สำหรับไปหน้าที่แสดงข้อมูลผู้ใช้ -->
-          <li><a class="dropdown-item" href="show_users.php">Show Users</a></li>
-        </ul>
         <!-- รายการเมนูเพิ่มเติม -->
         <ul class="nav flex-column">
           <!-- ลิงก์ไปหน้ารายการสินค้า -->
           <li class="nav-item side-menu">
             <a class="nav-link" href="product_list.php">
-              <!-- ไอคอนกล่องสินค้า และข้อความ Order -->
-              <i class="fas fa-box"></i> Order
+              <!-- ไอคอนตะกร้าสินค้า และข้อความ Order -->
+              <i class="fas fa-shopping-cart"></i> Order
             </a>
           </li>
           <!-- ลิงก์ไปหน้าการจัดการบาร์โค้ด -->
           <li class="nav-item">
-            <a class="nav-link" href="list_barcode.php">
-              <!-- ไอคอนบาร์โค้ด และข้อความ Barcode -->
-              <i class="fas fa-barcode"></i> Barcode
+            <a class="nav-link" href=".php">
+              <!-- ไอคอนบาร์โค้ด และข้อความ Tracking -->
+              <i class="fas fa-car"></i> Tracking
             </a>
           </li>
           <!-- ลิงก์ไปหน้าการตั้งค่าการแจ้งเตือน -->
           <li class="nav-item">
-            <a class="nav-link" href="alert_setting.php">
-              <!-- ไอคอนเฟือง และข้อความ Alert Setting -->
-              <i class="fas fa-cog"></i> Alert Setting
+            <a class="nav-link" href=".php">
+              <!-- ไอคอนเครื่องสแกน และข้อความ Scanning -->
+              <i class="fas fa-barcode"></i> Scanning
             </a>
           </li>
           <!-- ลิงก์ไปหน้ารายงาน -->
           <li class="nav-item">
-            <a class="nav-link" href="reporting.php">
+            <a class="nav-link" href=".php">
+              <!-- ไอคอนโกดังสินค้า และข้อความ Inventory -->
+              <i class="fas fa-warehouse"></i> Inventory
+            </a>
+          </li>
+          <!-- ลิงก์ไปหน้ารายงานปัญหา -->
+          <li class="nav-item">
+            <a class="nav-link" href=".php">
+              <!-- ไอคอนปัญหา และข้อความ Report Problem -->
+              <i class="fas fa-exclamation-circle"></i> Report Problem
+            </a>
+          </li>
+          <!-- ลิงก์ไปหน้ารายงาน -->
+          <li class="nav-item">
+            <a class="nav-link" href=".php">
               <!-- ไอคอนรายงาน และข้อความ Report -->
               <i class="fas fa-file-alt"></i> Report
             </a>
@@ -154,7 +162,43 @@ $result = mysqli_query($conn, $query);
     </a>
   </div>
 
-  <!-- การนำเข้าไฟล์ Bootstrap JS และ Font Awesome -->
+   <!-- Main Content -->
+   <div class="content">
+    <div class="container">
+      <div class="h4 text-center alert alert-success mb-4 mt-4" role="alert">Show Users</div>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <form action="show_users.php" method="get" class="d-flex align-items-center">
+          <input type="text" name="search" class="form-control me-2">
+          <button type="submit" class="btn btn-success me-2">Search</button>
+          <a href="show_users.php" class="btn btn-secondary">Back</a>
+        </form>
+      </div>
+
+      <!-- ตารางแสดงข้อมูล -->
+      <div class="table-responsive table-container">
+        <table class="table table-hover table-bordered table-striped text-center">
+          <thead class="table-success">
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Surname</th>
+              <th>Email</th>
+              <th>Telephone</th>
+              <th>Position</th>
+              <th>Store_ID</th>
+              <th>Update At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- แสดงข้อมูลผู้ใช้ -->
+            <!-- ข้อมูลจากฐานข้อมูลควรถูกนำมาแสดงในส่วนนี้ -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- รวม Bootstrap JS และ Font Awesome -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
