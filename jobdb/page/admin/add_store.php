@@ -11,16 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $location_store = $_POST['location_store'];
     $tel_store = $_POST['tel_store'];
     
-
-    // เพิ่มข้อมูลลงในฐานข้อมูลและตั้งค่า update_at เป็น CURRENT_TIMESTAMP
-    $sql = "INSERT INTO store (store_id, store_name, location_store, tel_store, update_at) VALUES ('$store_id', '$store_name', '$location_store', '$tel_store', CURRENT_TIMESTAMP)";
-
+    // เพิ่มข้อมูลลงในฐานข้อมูลและอัปเดตถ้าหาก store_id มีอยู่แล้ว
+    $sql = "INSERT INTO store (store_id, store_name, location_store, tel_store, update_at) 
+            VALUES ('$store_id', '$store_name', '$location_store', '$tel_store', CURRENT_TIMESTAMP)
+            ON DUPLICATE KEY UPDATE 
+            store_name = '$store_name', 
+            location_store = '$location_store', 
+            tel_store = '$tel_store', 
+            update_at = CURRENT_TIMESTAMP";
 
     if (mysqli_query($conn, $sql)) {
         echo "<!doctype html>
             <html>
             <body>
-            <script>alert('Add data success'); window.location='store.php';</script>
+            <script>alert('Data added or updated successfully'); window.location='store.php';</script>
             </body>
             </html>";
         exit();   
