@@ -171,7 +171,7 @@ mysqli_close($conn);
     <script>
         // ใช้ JsBarcode สร้างบาร์โค้ด
         <?php foreach ($products as $product): ?>
-            JsBarcode("#barcode-<?= htmlspecialchars($product['listproduct_id']) ?>", "<?= htmlspecialchars($product['listproduct_id']) ?>", {
+            JsBarcode("#barcode-<?= htmlspecialchars($product['listproduct_id']) ?>", "https://localhost/JOBDB/jobdb/page/admin/detail_barcode.php?listproduct_id=<?= htmlspecialchars($product['listproduct_id']) ?>", {
                 format: "CODE128",
                 width: 2.5,
                 height: 28,
