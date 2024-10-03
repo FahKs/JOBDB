@@ -1,6 +1,7 @@
 <?php
 class ConnectionDatabase
 {
+    // test
     public $servername = "localhost";
     public $username = "root";
     public $password = "";
