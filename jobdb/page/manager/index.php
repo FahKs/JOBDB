@@ -2,23 +2,46 @@
 // เริ่มต้นเซสชันเพื่อจัดเก็บข้อมูลของผู้ใช้ที่เข้าสู่ระบบ
 session_start();
 
-// นำเข้าไฟล์ 'condb.php' ซึ่งน่าจะประกอบด้วยข้อมูลการเชื่อมต่อฐานข้อมูล
+// นำเข้าไฟล์ 'condb.php' เพื่อเชื่อมต่อฐานข้อมูล
 include '../../service/condb.php';
 
-// สร้างอ็อบเจ็กต์จากคลาส ConnectionDatabase
+// สร้างอ็อบเจ็กต์จากคลาส ConnectionDatabase และเชื่อมต่อกับฐานข้อมูล
 $conn = new ConnectionDatabase();
+$conn = $conn->connect();
 
-// เรียกใช้เมธอด connect() เพื่อเชื่อมต่อกับฐานข้อมูลและเก็บการเชื่อมต่อไว้ในตัวแปร $conn
-$conn = $conn-> connect();
-
-// รับค่าการค้นหาที่ถูกส่งมาจากฟอร์มผ่าน URL ถ้าไม่มีการส่งค่ามาจะใช้ค่าว่าง ('') แทน
+// รับค่าการค้นหาจากฟอร์มผ่าน URL ถ้าไม่มีการส่งค่ามาจะใช้ค่าว่าง ('') แทน
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-// เขียนคำสั่ง SQL เพื่อค้นหาข้อมูลผู้ใช้ในฐานข้อมูลที่มีชื่อผู้ใช้ (name), รหัสผู้ใช้ (user_id), หรือ นามสกุล (surname) ตรงกับคำที่ค้นหา
+// เขียนคำสั่ง SQL เพื่อค้นหาข้อมูลผู้ใช้ในฐานข้อมูล
 $query = "SELECT * FROM users WHERE name LIKE '%$search%' OR user_id LIKE '%$search%' OR surname LIKE '%$search%'";
-
-// รันคำสั่ง SQL โดยใช้ฟังก์ชัน mysqli_query() และเก็บผลลัพธ์ไว้ในตัวแปร $result
 $result = mysqli_query($conn, $query);
+
+// ตรวจสอบว่ามีผลลัพธ์จากการค้นหาหรือไม่
+if ($result && mysqli_num_rows($result) > 0) {
+    // ดึงข้อมูลผู้ใช้จากผลลัพธ์การค้นหา
+    $user = mysqli_fetch_assoc($result);
+
+    // ตรวจสอบตำแหน่งและสถานะการเข้าสู่ระบบครั้งแรก
+    if ($user['position'] == 'manager' && $user['is_first_login'] == 1) {
+        echo '<form action="reset_password.php" method="POST">';
+        echo '<button type="submit" name="reset_password">Reset Password</button>';
+        echo '</form>';
+    }
+} else {
+    echo 'No users found.';
+}
+
+// ฟังก์ชันสำหรับรีเซ็ตรหัสผ่าน
+if (isset($_POST['reset_password'])) {
+    // โค้ดสำหรับรีเซ็ตรหัสผ่าน เช่นการเปลี่ยนสถานะ 'is_first_login'
+    $user = $_SESSION['user'];
+    $query = "UPDATE users SET is_first_login = 0 WHERE user_id = " . $user['user_id'];
+    mysqli_query($conn, $query);
+
+    // หลังจากรีเซ็ตแล้วให้กลับไปที่หน้า logout หรือ login ใหม่
+    header("Location: ../admin/singout.php");
+    exit();
+}
 ?>
 
 <!doctype html>
