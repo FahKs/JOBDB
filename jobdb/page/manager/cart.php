@@ -3,11 +3,9 @@ session_start();
 
 // ตรวจสอบว่ามีข้อมูลสินค้าในตะกร้าหรือไม่
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    //echo '<pre>';
-    //print_r($_SESSION['cart']);
-    //echo '</pre>';
+    // ถ้ามีสินค้าในตะกร้า ให้แสดงผลข้อมูลสินค้า
 } else {
-   // echo 'Cart is empty';
+    // ถ้าไม่มีสินค้าในตะกร้า ให้หยุดการทำงาน
     exit;
 }
 
@@ -32,6 +30,14 @@ foreach ($_SESSION["cart"] as $item) {
         $total_price += $item["price_set"] * $item["quantity"];
     }
 }
+
+// ฟังก์ชันสร้าง QR Code สำหรับ PromptPay
+function generatePromptPayQR($phoneNumber, $amount) {
+    $formattedAmount = number_format($amount, 2, '.', ''); // จำนวนเงินในรูปแบบทศนิยม
+    return "https://promptpay.io/$phoneNumber/$formattedAmount";
+}
+
+$qrCodeLink = generatePromptPayQR('0919750409', $total_price); // สร้าง QR Code
 ?>
 
 <!doctype html>
@@ -71,7 +77,7 @@ foreach ($_SESSION["cart"] as $item) {
                 ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><img src="<?= $imagePath ?>" alt="<?= htmlspecialchars($item["product_name"]) ?>" width="50" height="50"></td> <!-- แสดงรูปสินค้า -->
+                        <td><img src="<?= $imagePath ?>" alt="<?= htmlspecialchars($item["product_name"]) ?>" width="50" height="50"></td>
                         <td><?= htmlspecialchars($item["product_name"]) ?></td>
                         <td>฿<?= htmlspecialchars(number_format($item["price_set"], 2)) ?></td>
                         <td><?= htmlspecialchars($item["quantity"]) ?></td>
@@ -110,9 +116,10 @@ foreach ($_SESSION["cart"] as $item) {
                 <textarea name="shipping_address" id="address" class="form-control" rows="3" placeholder="กรอกที่อยู่" required></textarea>
             </div>
 
-            <div class="mb-3">
-                <label for="phone" class="form-label">เบอร์โทรศัพท์:</label>
-                <input type="text" name="phone_number" id="phone" class="form-control" placeholder="เบอร์โทรศัพท์" required>
+             <!-- แสดง QR Code -->
+             <div class="text-center mt-4">
+                 <h5>Scan QR Code to Pay with PromptPay</h5>
+                <img src="<?= $qrCodeLink ?>" alt="PromptPay QR Code">
             </div>
 
             <div class="mb-3">
@@ -123,14 +130,6 @@ foreach ($_SESSION["cart"] as $item) {
             <div class="mb-3">
                 <label for="branch_address" class="form-label">Branch Address:</label>
                 <input type="text" name="branch_address" id="branch_address" class="form-control" placeholder="Branch Address" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="payment_method" class="form-label">Payment Method:</label>
-                <select name="payment_method" id="payment_method" class="form-select" required>
-                    <option value="bank">Bank Transfer</option>
-                    <option value="credit">Credit Card</option>
-                </select>
             </div>
 
             <button type="submit" name="confirm_order" class="btn btn-success w-100">Confirm Order</button>
