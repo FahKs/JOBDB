@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(https://img.freepik.com/fotos-premium/mesa-al-aire-libre-cafe-libro-naturaleza-fondo-bosque-diseno-generativo-ai_784584-678.jpg);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    height: 70%;
+    background-color: rgba(52, 78, 65, 0.8); /* สีพื้นหลังพร้อมความโปร่งใส */
+    border-radius: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.block_A, .block_B {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.block_A {
+    background-color: rgba(163, 177, 138, 0.7);
+    color: #344E41;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.block_A .logo {
+    width: 20%;
+    margin-bottom: 20px;
+    border-radius: 50%;
+}
+
+.block_B {
+    background-color: rgba(58, 90, 64, 0.7); 
+    color: #DAD7CD;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+h1, h2 {
+    margin: 0 0 20px 0;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: #588157;
+    color: #DAD7CD;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #344E41;
+}
+
+/* ปรับแต่ง input[type="tel"] ให้มีลักษณะเหมือน input[type="email"] */
+input[type="tel"] {
+    width: 100%; /* ขยายให้เต็มความกว้างของคอนเทนเนอร์ */
+    padding: 12px; /* เพิ่ม padding เพื่อให้ input กว้างขึ้น */
+    margin: 8px 0; /* ระยะห่างระหว่างช่อง input */
+    display: inline-block; /* จัดการ display ให้เป็น inline-block */
+    border: 1px solid #ccc; /* ขอบสีเทาอ่อน */
+    border-radius: 4px; /* มุมโค้งมน */
+    box-sizing: border-box; /* ป้องกันปัญหาขอบในกับ padding */
+    background-color: #f8f9fa; /* สีพื้นหลัง */
+    font-size: 16px; /* ขนาดฟอนต์ */
+    color: #333; /* สีตัวอักษร */
+}
+
+/* ปรับแต่งปุ่ม Submit */
+button {
+    width: 100%; /* ขยายปุ่มให้เต็มความกว้าง */
+    background-color: #588157; /* สีเขียว */
+    color: white; /* สีตัวอักษรขาว */
+    padding: 14px 20px; /* เพิ่ม padding ให้ปุ่มใหญ่ขึ้น */
+    margin: 8px 0; /* เพิ่มระยะห่างระหว่างปุ่มกับช่อง input */
+    border: none; /* เอาขอบปุ่มออก */
+    border-radius: 4px; /* มุมโค้งมน */
+    cursor: pointer; /* เมื่อเลื่อนเมาส์จะเปลี่ยนเป็นมือ */
+    font-size: 16px; /* ขนาดฟอนต์ */
+}
+
+button:hover {
+    background-color: #344E41; /* เปลี่ยนสีปุ่มเมื่อ hover */
+}
+
+/* จัดการฟอร์ม */
+form {
+    width: 300px; /* กำหนดความกว้างให้กับฟอร์ม */
+    margin: auto; /* จัดกึ่งกลาง */
+}
+
+/* จัดการ label */
+label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+    color: white; /* สีข้อความ */
+}
